@@ -1,2 +1,129 @@
-<!doctype html>
-<html></html>
+<!Doctype html>
+<head>
+<meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name='viewport' content="width=device-width,initial-scale=1.0"/>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class='container' id='content'>
+
+</div>
+
+
+<div>
+
+</div>
+</div>
+<script>
+
+var users={};
+fetch(/*"https://yogesh.free.beeceptor.com/users"*/ "https://randomuser.me/api/?results=50")
+.then((response)=> response.json())
+.then(data=>{
+//Parsing Data
+if(data instanceof Object)
+if(data.results!=null)
+	localStorage.data=JSON.stringify(data.results);
+	
+if(localStorage.users!=null)
+	{
+	users=JSON.parse(localStorage.users);
+	}
+users=data.results;
+localStorage.users=JSON.stringify(data.results);
+$("div#content").html(userTable());
+
+})
+
+
+
+
+function userTable()
+{
+var tbldata=users.map((e)=>
+{
+return {
+"name":e.name.first+" "+e.name.last,
+"cell":e.cell,"option":""}
+});
+
+tblbody="";
+var count=1
+tbldata.forEach((e)=>
+{
+tblbody+="<tr><td>"+count+++"</td><td>"+e.name+"</td><td>"+e.cell+"</td><td><button class='btn btn-warning' onclick='drawUser("+count+")'>View User</button></td></tr>";
+})
+console.log("Table loaded");
+return "<div class='table-responsive'><table  class='table' id='userTable'>"+
+"<thead>"+
+"<tr>"+
+"<th>User Id</th>"+
+"<th>Name</th>"+
+"<th>Cell</th>"+
+"<th>Option</th>"+
+"</tr>"+
+"</thead>"+
+"<tbody>"+
+tblbody+
+"</tbody>"+
+"</table></div>";
+}
+
+$("#content").html(User(2));
+function drawTable()
+{
+$("#content").html(userTable());
+}
+
+function drawUser(userid)
+{
+
+$("#content").html(User(userid-1));
+}
+function User(userid)
+{
+if(userid!=null)
+var e=users[userid];
+console.log(userid);
+return `<div class='card'>
+<div class='card-header'>
+<h2>User Profile</h2>
+<button onclick='drawTable()' class='btn btn-info'>Back</button>
+</div>
+<div class='card-body'>
+<div class='row'>
+<img src="https://picsum.photos/200/"  class='img-responsive col-xs-3 col-sm-3 col-md-4 col-lg-6' />
+<div class='col-sm-6 col-xs-6'>
+<div><span class='text-info'>Name</span></div>
+<div><span class='text-info'>Username</span></div>
+<div><span class='text-info'>Cell</span></div>
+<div><span class='text-info'>Address</span>
+			<div class="text-right">
+			<span class="text-info">Door No</span>
+			<span class='text-info'>Street</span>
+			<span class='text-info'>City</span>
+			<span class='text-info'>Post Code</span>
+			<span class='text-info'>Country</span>
+			<span class='text-info'>TimeZone</span>
+			</div>
+			</div>
+<div><span class='text-info'>Gender</span></div>
+<div><span class='text-info'>Email</span></div>
+</div>
+</div>
+<div class='card-footer'>
+Registered Date:
+Age :
+</div>`;
+}
+</script>
+
+</body>
+</head>
+
